@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-    <plugin uexName="uexXmlHttpMgr" version="3.0.6" build = "6">
-	<info>6:修复请求不到数据的问题</info>
+    <plugin uexName="uexXmlHttpMgr" version="3.0.8" build = "8">
+		<info>8:修复请求设置证书不成功的问题</info>
+		<build>7:修改onData回调方法参数requestCode为必选参数</build>
+		<build>6:修复请求不到数据的问题</build>
 		<build>5:新增put请求和delete请求</build>
 		<build>4:修复没有调用setAppVerify方法而导致的空指针问题</build>
 		<build>3:修复变量未定义的问题</build>

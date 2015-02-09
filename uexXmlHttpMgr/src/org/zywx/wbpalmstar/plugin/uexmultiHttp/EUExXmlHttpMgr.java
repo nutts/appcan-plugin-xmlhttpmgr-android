@@ -337,15 +337,15 @@ public class EUExXmlHttpMgr extends EUExBase {
 		return mBrwView.getWidgetType();
 	}
 
-	public void callBack(int inOpCode, String inResult) {
+	public void callBack(int inOpCode, String inResult, int responseCode) {
 		String js = SCRIPT_HEADER + "if(" + onFunction + "){" + onFunction
-				+ "(" + inOpCode + "," + 1 + ",'" + inResult + "');}";
+				+ "(" + inOpCode + "," + 1 + ",'" + inResult +"'," + responseCode + ");}";
 		onCallback(js);
 	}
 
-	public void errorCallBack(int inOpCode, String inResult) {
+	public void errorCallBack(int inOpCode, String inResult, int responseCode) {
 		String js = SCRIPT_HEADER + "if(" + onFunction + "){" + onFunction
-				+ "(" + inOpCode + "," + (-1) + ",'" + inResult + "');}";
+				+ "(" + inOpCode + "," + (-1) + ",'" + inResult + "'," + responseCode + ");}";
 		onCallback(js);
 	}
 

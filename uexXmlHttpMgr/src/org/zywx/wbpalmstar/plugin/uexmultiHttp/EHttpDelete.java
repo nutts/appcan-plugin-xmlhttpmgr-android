@@ -39,6 +39,7 @@ public class EHttpDelete extends Thread implements HttpTask {
 	private boolean mFromRedirects;
 	private Hashtable<String, String> mHttpHead;
 	private HttpDelete mHttpDelete;
+	private int responseCode;
 
 	public EHttpDelete(String inXmlHttpID, String inUrl, int timeout,
 			EUExXmlHttpMgr euExXmlHttpMgr) {
@@ -106,7 +107,7 @@ public class EHttpDelete extends Thread implements HttpTask {
 			mHttpClient = Http.getHttpClient(mTimeOut);
 		}
 		if (null == mHttpClient) {
-			mXmlHttpMgr.callBack(mXmlHttpID, "error:Exception!");
+//			mXmlHttpMgr.callBack(mXmlHttpID, "error:Exception!");
 			return;
 		}
 		mHttpDelete = new HttpDelete(mUrl);
@@ -118,7 +119,7 @@ public class EHttpDelete extends Thread implements HttpTask {
 		try {
 			mXmlHttpMgr.printHeader(-1, mXmlHttpID, curUrl, true, mHttpDelete.getAllHeaders());
 			HttpResponse response = mHttpClient.execute(mHttpDelete);
-			int responseCode = response.getStatusLine().getStatusCode();
+			responseCode = response.getStatusLine().getStatusCode();
 			mXmlHttpMgr.printHeader(responseCode, mXmlHttpID, curUrl, false, response.getAllHeaders());
 			switch (responseCode) {
 			case HttpStatus.SC_OK:
@@ -155,10 +156,10 @@ public class EHttpDelete extends Thread implements HttpTask {
 		}
 		mXmlHttpMgr.printResult(mXmlHttpID, curUrl, result);
 		if (result.startsWith("error")) {
-			mXmlHttpMgr.errorCallBack(mXmlHttpID, result);
+			mXmlHttpMgr.errorCallBack(mXmlHttpID, result, responseCode);
 			return;
 		}
-		mXmlHttpMgr.callBack(mXmlHttpID, result);
+		mXmlHttpMgr.callBack(mXmlHttpID, result, responseCode);
 		return;
 	}
 
