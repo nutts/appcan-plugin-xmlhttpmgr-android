@@ -56,6 +56,7 @@ public class EHttpGet extends Thread implements HttpTask {
 	private boolean mHasLocalCert;
 	private EUExXmlHttpMgr mXmlHttpMgr;
 	private Hashtable<String, String> mHttpHead;
+	private int responseCode;
 
 	// private String mBody;
 
@@ -168,7 +169,7 @@ public class EHttpGet extends Thread implements HttpTask {
 			mXmlHttpMgr.printHeader(-1, mXmlHttpID, curUrl, true,
 					mConnection.getRequestProperties());
 			mConnection.connect();
-			int responseCode = mConnection.getResponseCode();
+			responseCode = mConnection.getResponseCode();
 			Map<String, List<String>> headers = mConnection.getHeaderFields();
 			mXmlHttpMgr.printHeader(responseCode, mXmlHttpID, curUrl, false,
 					headers);
@@ -223,10 +224,10 @@ public class EHttpGet extends Thread implements HttpTask {
 		mXmlHttpMgr.printResult(mXmlHttpID, curUrl, result);
 		mXmlHttpMgr.onFinish(mXmlHttpID);
 		if (result.startsWith("error")) {
-			mXmlHttpMgr.errorCallBack(mXmlHttpID, result);
+			mXmlHttpMgr.errorCallBack(mXmlHttpID, result, responseCode);
 			return;
 		}
-		mXmlHttpMgr.callBack(mXmlHttpID, result);
+		mXmlHttpMgr.callBack(mXmlHttpID, result, responseCode);
 		return;
 	}
 

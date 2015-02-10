@@ -133,6 +133,7 @@ public class ECusHttpPost extends Thread implements HttpTask,
 	}
 
 	boolean run = false;
+	private int responseCode;
 
 	protected void doInBackground() {
 		if (mCancelled) {
@@ -156,7 +157,7 @@ public class ECusHttpPost extends Thread implements HttpTask,
 			} else {
 				multiEn = createMultiEntity();
 				if (null == multiEn) {
-					mXmlHttpMgr.callBack(mXmlHttpID, "error:file not found!");
+//					mXmlHttpMgr.callBack(mXmlHttpID, "error:file not found!");
 				}
 			}
 		} else if (null != mBody) {
@@ -205,7 +206,7 @@ public class ECusHttpPost extends Thread implements HttpTask,
 			mConnection.connect();
 			mOutStream = new DataOutputStream(mConnection.getOutputStream());
 			multiEn.writeTo(mOutStream);
-			int responseCode = mConnection.getResponseCode();
+			responseCode = mConnection.getResponseCode();
 			Map<String, List<String>> headers = mConnection.getHeaderFields();
 			mXmlHttpMgr.printHeader(responseCode, mXmlHttpID, curUrl, false,
 					headers);
@@ -252,10 +253,10 @@ public class ECusHttpPost extends Thread implements HttpTask,
 		}
 		mXmlHttpMgr.printResult(mXmlHttpID, curUrl, result);
 		if (result.startsWith("error")) {
-			mXmlHttpMgr.errorCallBack(mXmlHttpID, result);
+			mXmlHttpMgr.errorCallBack(mXmlHttpID, result, responseCode);
 			return;
 		}
-		mXmlHttpMgr.callBack(mXmlHttpID, result);
+		mXmlHttpMgr.callBack(mXmlHttpID, result, responseCode);
 		return;
 	}
 

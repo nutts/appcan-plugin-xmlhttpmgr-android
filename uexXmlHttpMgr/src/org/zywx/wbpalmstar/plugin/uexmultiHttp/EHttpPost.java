@@ -56,6 +56,7 @@ public class EHttpPost extends Thread implements HttpTask, HttpClientListener {
 	static final int BODY_TYPE_FILE = 1;
 	
 	private WWidgetData curWData = null;
+	private int responseCode;
 
 	public EHttpPost(String inXmlHttpID, String url, int timeout,
 			EUExXmlHttpMgr xmlHttpMgr) {
@@ -153,7 +154,7 @@ public class EHttpPost extends Thread implements HttpTask, HttpClientListener {
 			mHttpClient = Http.getHttpClient(mTimeOut);
 		}
 		if (null == mHttpClient) {
-			mXmlHttpMgr.callBack(mXmlHttpID, "error:Exception!");
+//			mXmlHttpMgr.callBack(mXmlHttpID, "error:Exception!");
 			return;
 		}
 		mHttpPost = new HttpPost(curUrl);
@@ -166,7 +167,7 @@ public class EHttpPost extends Thread implements HttpTask, HttpClientListener {
 			} else {
 				multiEn = createMultiEntity();
 				if (null == multiEn) {
-					mXmlHttpMgr.callBack(mXmlHttpID, "error:file not found!");
+//					mXmlHttpMgr.callBack(mXmlHttpID, "error:file not found!");
 				}
 			}
 		} else if (null != mBody) {
@@ -188,7 +189,7 @@ public class EHttpPost extends Thread implements HttpTask, HttpClientListener {
 			mXmlHttpMgr.printHeader(-1, mXmlHttpID, curUrl, true,
 					mHttpPost.getAllHeaders());
 			HttpResponse response = mHttpClient.execute(mHttpPost);
-			int responseCode = response.getStatusLine().getStatusCode();
+			responseCode = response.getStatusLine().getStatusCode();
 			mXmlHttpMgr.printHeader(responseCode, mXmlHttpID, curUrl, false,
 					response.getAllHeaders());
 			switch (responseCode) {
@@ -236,10 +237,10 @@ public class EHttpPost extends Thread implements HttpTask, HttpClientListener {
 		}
 		mXmlHttpMgr.printResult(mXmlHttpID, curUrl, result);
 		if (result.startsWith("error")) {
-			mXmlHttpMgr.errorCallBack(mXmlHttpID, result);
+			mXmlHttpMgr.errorCallBack(mXmlHttpID, result, responseCode);
 			return;
 		}
-		mXmlHttpMgr.callBack(mXmlHttpID, result);
+		mXmlHttpMgr.callBack(mXmlHttpID, result, responseCode);
 		return;
 	}
 
